@@ -7,14 +7,40 @@
 <template>
   <ul>
       <li><router-link to="/">Home</router-link></li>
-      <li><router-link to="/Server/Server1">Server 1</router-link></li>
-      <li><router-link to="/Server/Server2">Server 2</router-link></li>
-      <li><router-link to="/Server/Server3">Server 3</router-link></li>
+      <li v-for="name in serverNames" :key="name.name"><router-link :to="{name: 'Server', path: '/Server/' + name.name, params: { id: name.name}}">{{ name.name }}</router-link></li>
       <li><router-link to="/AddServer">Add Server</router-link></li>
     </ul>
     <router-view></router-view>
 </template>
 
+<script>
+import Server from "./api/serverMock";
+
+
+export default {
+  data () {
+    return {
+      loading: false,
+      serverNames: null,
+      error: null
+    }
+  },
+  created () {
+    this.fetchData()
+  },
+  watch: {
+  },
+  methods: {
+    fetchData () {
+      this.error = this.post = null
+      this.loading = true
+      console.log("fetching Names")
+      this.serverNames = Server.all();
+      this.loading = false
+    }
+  }
+}
+</script>
 
 <style>
 #app {

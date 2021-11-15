@@ -6,16 +6,16 @@ export default {
 	ENDPOINT() {
 		return ENDPOINT;
 	},
-	get(path) {
+	get(path : string): any {
 		return Axios.get(ENDPOINT + path);
 	},
-	post(path, data) {
+	post(path : string, data : any): any {
 		return Axios.post(ENDPOINT + path, data);
     },
-    put(path, data) {
+    put(path : string, data: any) {
 		return Axios.put(ENDPOINT + path, data);
 	},
-	delete(path, options) {
-		return Axios.delete(ENDPOINT + path, options);
+	delete(path : string) {
+		return Axios.delete(ENDPOINT + path);
 	}
 };

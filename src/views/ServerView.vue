@@ -21,7 +21,7 @@
   </div></template>
 
 <script>
-import Server from "../api/server";
+import Server from "../api/serverMock";
 
 
 export default {
