@@ -2,62 +2,69 @@
 </script>
 
 <template>
-<div class="post">
-    <div v-if="loading" class="loading">
-      Loading...
-    </div>
+  <div class="tab content">
+    <router-link class="tablinks target" :to="{name: 'Details', path: '/Server/' +  id + '/Details'}">ServerDetails</router-link>
+    <router-link class="tablinks target" :to="{name: 'Ressources', path: '/Server/' +  id + '/Ressources'}">ServerDetails</router-link>
+    <router-view></router-view>
+  </div>
+</template>
 
-    <div v-if="error" class="error">
-      {{ error }}
-    </div>
+<script lang="ts">
+import Server from "../api/serverMock"
+import { defineComponent } from 'vue'
 
-    <div v-if="servers" class="content">
-      <h2>{{ servers.name }}</h2>
-      <p>{{ servers.comment }}</p>
-      <p>{{ servers.discription }}</p>
-      <p>{{ servers.status }}</p>
-      <p>{{ servers.state }}</p>
-    </div>
-  </div></template>
-
-<script>
-import Server from "../api/serverMock";
-
-
-export default {
+export default defineComponent({
   data () {
     return {
       loading: false,
-      servers: null,
+      id: "",
       error: null
     }
   },
   created () {
-    // fetch the data when the view is created and the data is
-    // already being observed
-    this.fetchData()
+    this.id = this.$route.params.id as string
   },
   watch: {
-    // call again the method if the route changes
-    '$route': 'fetchData'
   },
   methods: {
-    fetchData () {
-      this.error = this.post = null
-      this.loading = true
-      const fetchedId = this.$route.params.id
-      if(fetchedId !== undefined){
-        console.log("fetching Data for: " + fetchedId)
-        this.servers = Server.get(fetchedId);
-      }
-      this.loading = false
-    }
-  }
-}
+  },
+})
 </script>
 
 <style scoped>
-a {
-  color: #00ff8c;
+.tab {
+  overflow: hidden;
+  background-color: #222629;
+  height: 5%;
 }
+
+/* Style the buttons inside the tab */
+.tab a {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+.tab a:active{
+  background-color: #474a4f;
+}
+
+/* Change background color of buttons on hover */
+.tab a:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+:target {
+  background-color: red;
+}
+
 </style>

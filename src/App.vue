@@ -1,45 +1,16 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-
-</script>
-
 <template>
-  <ul>
-      <li><router-link to="/">Home</router-link></li>
-      <li v-for="name in serverNames" :key="name.name"><router-link :to="{name: 'Server', path: '/Server/' + name.name, params: { id: name.name}}">{{ name.name }}</router-link></li>
-      <li><router-link to="/AddServer">Add Server</router-link></li>
-    </ul>
-    <router-view></router-view>
+  <SideBar></SideBar>
+  <router-view></router-view>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import Server from "./api/serverMock";
+import SideBar from "./components/SideBar.vue"
 
-
-export default {
-  data () {
-    return {
-      loading: false,
-      serverNames: null,
-      error: null
-    }
-  },
-  created () {
-    this.fetchData()
-  },
-  watch: {
-  },
-  methods: {
-    fetchData () {
-      this.error = this.post = null
-      this.loading = true
-      console.log("fetching Names")
-      this.serverNames = Server.all();
-      this.loading = false
-    }
-  }
-}
+export default defineComponent({
+    components: { SideBar }
+})
 </script>
 
 <style>
@@ -48,7 +19,34 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   margin-top: 60px;
 }
+
+body{
+  background-color: #222629;
+  color: rgb(225, 225, 225);
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+  color: #6A6E71;
+}
+.sidenav{
+  width: 15%; 
+}
+
+.content{
+  width: 85%;
+  position: fixed;
+  left: 15%;
+  top: 5%;
+}
+
+.TabContent{
+  width: 85%;
+  position: fixed;
+  left: 15%;
+  top: 10%;
+}
+
 </style>

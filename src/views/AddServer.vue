@@ -1,9 +1,11 @@
 <template>
-<h1>Add Server</h1>
+<div class="content">
+
+    <h1>Add Server</h1>
+</div>
 </template>
 
 <style scoped>
 a {
-  color: #42b983;
 }
 </style>
