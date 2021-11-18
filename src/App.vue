@@ -1,4 +1,5 @@
 <template>
+  <img class="profile" src="./assets/profile.png" />
   <SideBar></SideBar>
   <router-view></router-view>
 </template>
@@ -47,6 +48,17 @@ h4, h5, h6 {
   position: fixed;
   left: 15%;
   top: 10%;
+} 
+
+.profile{
+  z-index: 1;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 8%;
+  margin: 10px;
+  margin-right: 20px;
+  border-radius: 8px;
 }
 
 </style>

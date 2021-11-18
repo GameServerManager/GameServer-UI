@@ -7,6 +7,8 @@ import HelloWorld from './views/HelloWorld.vue'
 import ServerView from './views/ServerView.vue'
 import Details from './views/ServerViews/Details.vue'
 import Ressources from './views/ServerViews/Ressources.vue'
+import Advanced from './views/ServerViews/Advanced.vue'
+import Export from './views/ServerViews/Export.vue'
 import AddServer from './views/AddServer.vue'
 
 
@@ -19,6 +21,12 @@ const routes = [
         },
         {
           name: 'Ressources', path: 'Ressources', component: Ressources
+        },
+        {
+          name: 'Advanced', path: 'Advanced', component: Advanced
+        },
+        {
+          name: 'Export', path: 'Export', component: Export
         }
       ]
     },

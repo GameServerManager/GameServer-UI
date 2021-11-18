@@ -11,7 +11,7 @@
       {{ error }}
     </div>
 
-    <h2>Ressources</h2>
+    <h2>Advanced</h2>
 
   </div>
 </template>

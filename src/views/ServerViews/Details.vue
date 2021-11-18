@@ -42,7 +42,7 @@ export default defineComponent({
   },
   watch: {
     // call again the method if the route changes
-    '$route': 'fetchData'
+    '$route.params.id': 'fetchData'
   },
   methods: {
     fetchData () {
