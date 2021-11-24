@@ -12,13 +12,14 @@
     </div>
 
     <h2>Ressources</h2>
-
+    <Gauge></Gauge>
   </div>
 </template>
 
 <script lang="ts">
 import Server from "../../api/serverMock"
 import { defineComponent } from 'vue'
+import Gauge from "../../components/ResGauge.vue"
 
 export default defineComponent({
   data () {
@@ -36,6 +37,8 @@ export default defineComponent({
   },
   methods: {
   },
+  components: { Gauge }
+
 })
 </script>
 

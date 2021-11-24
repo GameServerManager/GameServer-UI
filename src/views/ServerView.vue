@@ -38,7 +38,6 @@ export default defineComponent({
   },
   methods: {
     highlight(event: any) {
-        console.log(event.target);
         this.resetHighlite();
         event.target.style.backgroundColor = "#474a4f"
         event.target.style.borderLeft = "solid #618930"
@@ -48,7 +47,7 @@ export default defineComponent({
           if (currentElement == null) {
             break;
           }
-          currentElement.style.borderRight = "none"
+          currentElement.style.borderRight = "hidden"
           currentElement.style.borderLeft = "solid #618930"
           currentElement = currentElement.previousElementSibling as HTMLElement
         }
@@ -60,7 +59,7 @@ export default defineComponent({
       Array.prototype.forEach.call(elements, function(el) {
         el.style.backgroundColor = "#222629"
         if(!first){
-          el.style.borderLeft = "none"
+          el.style.borderLeft = "hidden"
         }
         el.style.borderRight = "solid #618930"
         first = false
@@ -98,11 +97,10 @@ export default defineComponent({
   border-bottom: none;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  border-left: none;
+  border-left: hidden;
   outline: none;
   cursor: pointer;
   padding: 14px 16px;
-  transition: 0.3s;
   font-size: 17px;
 }
 .tab #Details {
