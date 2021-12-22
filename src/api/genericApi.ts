@@ -1,21 +1,24 @@
-import Axios from 'axios';
-
-let ENDPOINT = 'localhost:4444/';
+import Axios, { AxiosResponse } from 'axios';
+let ENDPOINT = 'https://localhost:7123/api';
 
 export default {
 	ENDPOINT() {
 		return ENDPOINT;
 	},
-	get(path : string): any {
-		return Axios.get(ENDPOINT + path);
+	get<RetType>(path: string): Promise<RetType> {
+		var promis = new Promise<RetType>((resolve, reject) => Axios.get(ENDPOINT + path).then((value)=>{resolve(value.data)}))
+        return promis;
 	},
-	post(path : string, data : any): any {
-		return Axios.post(ENDPOINT + path, data);
+	post<RetType>(path: string, data: RetType): Promise<RetType> {
+		var promis = new Promise<RetType>((resolve, reject) => Axios.post(ENDPOINT + path, data).then((value)=>{resolve(value.data)}))
+        return promis;
     },
-    put(path : string, data: any) {
-		return Axios.put(ENDPOINT + path, data);
+	put<RetType>(path: string, data: RetType): Promise<RetType>{
+		var promis = new Promise<RetType>((resolve, reject) => Axios.put(ENDPOINT + path, data).then((value)=>{resolve(value.data)}))
+        return promis;
 	},
-	delete(path : string) {
-		return Axios.delete(ENDPOINT + path);
+	delete<RetType>(path : string) : Promise<RetType> {
+		var promis = new Promise<RetType>((resolve, reject) => Axios.delete(ENDPOINT + path).then((value)=>{resolve(value.data)}))
+		return promis;
 	}
 };

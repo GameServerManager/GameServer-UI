@@ -6,7 +6,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Server from "./api/serverMock";
 import SideBar from "./components/SideBar.vue"
 
 export default defineComponent({

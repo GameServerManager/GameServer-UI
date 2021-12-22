@@ -12,7 +12,6 @@
 </template>
 
 <script lang="ts">
-import Server from "../api/serverMock"
 import { defineComponent } from 'vue'
 
 export default defineComponent({

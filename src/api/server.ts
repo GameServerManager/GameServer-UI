@@ -1,39 +1,27 @@
 import genericApi from "./genericApi";
 
 export default {
-    all(): IServer[]{
-        let a: IServer = {
-            name: "",
-            comment: "",
-            discription: "",
-            status: "",
-            state: ""
-        };
-        return [a];
-        //return genericApi.get("Servers")
+    all(): Promise<IServer[]>{
+        return genericApi.get("/Server")
     },
 
-    get(id: string): IServer {
-        let a: IServer = {
-            name: "",
-            comment: "",
-            discription: "",
-            status: "",
-            state: ""
-        };
-        return a;
-        //return genericApi.get("Servers/" + id)
+    get(id: string): Promise<IServer> {
+        return genericApi.get("/Server/" + id)
+    },
+
+    getLogs(id: string): Promise<string> {
+        return genericApi.get("/Server/" + id + "/Log")
     },
 
     update(id : string, data : IServer) {
-        return genericApi.put("Servers/" + id, data)
+        return genericApi.put("/Server/" + id, data)
     },
 
     create(data : IServer) {
-        return genericApi.post("Servers/", data)
+        return genericApi.post("/Server/", data)
     },
 
     delete(id : string) {
-        return genericApi.delete("Servers/" + id)
+        return genericApi.delete("/Server/" + id)
     }
 }

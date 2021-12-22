@@ -1,7 +1,6 @@
 interface IServer {
+    id : string
     name : string
-    comment : string
-    discription : string
     status : string
-    state : string
+    state: string
 }

@@ -17,7 +17,6 @@
 </template>
 
 <script lang="ts">
-import Server from "../../api/serverMock"
 import { defineComponent } from 'vue'
 import Gauge from "../../components/ResGauge.vue"
 

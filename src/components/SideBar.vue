@@ -1,20 +1,20 @@
 <template>
     <ul id="mySidenav" class="sidenav">
         <li><router-link to="/">Home</router-link></li>
-        <li v-for="name in serverNames" :key="name.name"><router-link :to="{name: 'Server', path: '/Server/' + name.name, params: { id: name.name}}">{{ name.name }}</router-link></li>
+        <li v-for="info in serverInfo" :key="info.id"><router-link :to="{name: 'Server', path: '/Server/' + info.id, params: { id: info.id}}">{{ info.name[0] }}</router-link></li>
         <li><router-link to="/AddServer">Add Server</router-link></li>
     </ul>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Server from "../api/serverMock";
+import Server from "../api/server";
 
 export default defineComponent({
   data () {
     return {
       loading: false,
-      serverNames: [] as IServer[],
+      serverInfo: [] as IServer[],
       error: null
     }
   },
@@ -28,7 +28,10 @@ export default defineComponent({
       this.error  = null
       this.loading = true
       console.log("fetching Names")
-      this.serverNames = Server.all();
+      Server.all().then((value) => {
+        this.serverInfo = value;
+        console.log(value)
+      });
       this.loading = false
     }
   }

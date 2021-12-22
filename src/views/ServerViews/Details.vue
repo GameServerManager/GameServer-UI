@@ -13,8 +13,6 @@
 
     <div v-if="servers" >
       <h2>{{ servers.name }}</h2>
-      <p>{{ servers.comment }}</p>
-      <p>{{ servers.discription }}</p>
       <p>{{ servers.status }}</p>
       <p>{{ servers.state }}</p>
     </div>
@@ -23,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import Server from "../../api/serverMock"
+import Server from "../../api/server"
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -52,7 +50,9 @@ export default defineComponent({
       this.id = fetchedId
       if(fetchedId !== undefined){
         console.log("fetching Data for: " + fetchedId)
-        this.servers = Server.get(fetchedId);
+        Server.get(fetchedId).then((value) =>{
+          this.servers = value
+        });
       }
       this.loading = false
     }
