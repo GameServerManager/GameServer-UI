@@ -88,6 +88,19 @@ export default defineComponent({
         }
         this.updateSelection();
       });
+      this.connection.on("StdOutClosed", (id, execId) => {
+        if (fetchedId === id) {
+          Object.keys(this.LogCache).forEach((scriptName) => {
+            if (this.LogCache[scriptName][execId]) {
+              delete this.LogCache[scriptName][execId];
+            }
+            if (Object.keys(this.LogCache[scriptName]).length == 0) {
+              delete this.LogCache[scriptName];
+            }
+          });
+        }
+        this.updateSelection();
+      });
     });
     document.getElementById("ConsoleInput")?.focus();
   },
@@ -107,9 +120,7 @@ export default defineComponent({
       names.forEach((scriptName) => {
         var opt = document.createElement("option");
         opt.value = scriptName;
-        opt.innerHTML = scriptName; // whatever property it has
-
-        // then append it to the select element
+        opt.innerHTML = scriptName;
 
         nameselection?.appendChild(opt);
       });
@@ -125,14 +136,17 @@ export default defineComponent({
       while (idselection.hasChildNodes()) {
         idselection.lastChild?.remove();
       }
-      Object.keys(this.LogCache[nameselection?.value]).forEach((id) => {
-        var opt = document.createElement("option");
-        opt.value = id;
-        opt.innerHTML = this.shorten(id, 10);
-        idselection?.appendChild(opt);
-      });
-      if (preselectedId) {
-        idselection.value = preselectedId;
+
+      if (this.LogCache[nameselection?.value]) {
+        Object.keys(this.LogCache[nameselection?.value]).forEach((id) => {
+          var opt = document.createElement("option");
+          opt.value = id;
+          opt.innerHTML = this.shorten(id, 10);
+          idselection?.appendChild(opt);
+        });
+        if (preselectedId) {
+          idselection.value = preselectedId;
+        }
       }
       this.updateLogs();
     },
@@ -154,7 +168,10 @@ export default defineComponent({
       let idselection = document.getElementById(
         "IdSelection"
       ) as HTMLSelectElement;
-      this.Log = this.LogCache[nameselection?.value][idselection?.value];
+      this.Log = "";
+      if (nameselection?.value) {
+        this.Log = this.LogCache[nameselection?.value][idselection?.value];
+      }
     },
     shorten(str, n) {
       return str.length > n ? str.substr(0, n - 1) + "&hellip;" : str;
