@@ -5,6 +5,7 @@
   <div class="tab content">
     <router-link class="tablinks" id="Details" @click="highlight($event)" :to="{name: 'Details', path: '/Server/' +  id + '/Details'}">Details</router-link>
     <router-link class="tablinks" id="Ressources" @click="highlight($event)" :to="{name: 'Ressources', path: '/Server/' +  id + '/Ressources'}">Ressources</router-link>
+    <router-link class="tablinks" id="Logs" @click="highlight($event)" :to="{name: 'Logs', path: '/Server/' +  id + '/Logs'}">Logs</router-link>
     <router-link class="tablinks" id="Advanced" @click="highlight($event)" :to="{name: 'Advanced', path: '/Server/' +  id + '/Advanced'}">Advanced</router-link>
     <router-link class="tablinks" id="Export" @click="highlight($event)" :to="{name: 'Export', path: '/Server/' +  id + '/Export'}">Export</router-link>
     <router-view></router-view>

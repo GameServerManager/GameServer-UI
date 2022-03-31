@@ -3,7 +3,7 @@
 
 <template>
   <div class="TabContent">
-    <h2>Advanced</h2>
+    <h2>Logs</h2>
 
     <div v-if="loading" class="loading">Loading... Connecting to Container</div>
 
@@ -25,17 +25,6 @@
         ></select>
       </div>
       <span>{{ Log }}</span>
-      <div class="consoleInput">
-        <label for="ConsoleInput">></label>
-        <input
-          type="text"
-          id="ConsoleInput"
-          name="ConsoleInput"
-          size="10"
-          v-on:keyup.enter="send"
-          v-model="input"
-        />
-      </div>
     </div>
   </div>
 </template>
@@ -69,7 +58,7 @@ export default defineComponent({
       connected
         .then(() => {
           this.loading = false;
-          this.connection.send("Attach", fetchedId, false);
+          this.connection.send("Attach", fetchedId, true);
         })
         .catch((err) => (this.error = err));
       this.connection.on("ConsoleMessage", (id, message) => {
@@ -84,19 +73,6 @@ export default defineComponent({
               }
               this.LogCache[scriptName][id] += message[scriptName][id];
             });
-          });
-        }
-        this.updateSelection();
-      });
-      this.connection.on("StdOutClosed", (id, execId) => {
-        if (fetchedId === id) {
-          Object.keys(this.LogCache).forEach((scriptName) => {
-            if (this.LogCache[scriptName][execId]) {
-              delete this.LogCache[scriptName][execId];
-            }
-            if (Object.keys(this.LogCache[scriptName]).length == 0) {
-              delete this.LogCache[scriptName];
-            }
           });
         }
         this.updateSelection();
@@ -154,17 +130,6 @@ export default defineComponent({
         }
       }
       this.updateLogs();
-    },
-    send() {
-      let fetchedId = this.$route.params.id as string;
-      let idselection = document.getElementById(
-        "IdSelection"
-      ) as HTMLSelectElement;
-      this.connection
-        .send("SendCommand", fetchedId, idselection?.value, this.input + "\n")
-        .catch((err) => console.log("error: " + err))
-        .then((err) => console.log("success: " + err));
-      this.input = "";
     },
     updateLogs() {
       let nameselection = document.getElementById(
