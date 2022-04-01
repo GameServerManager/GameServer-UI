@@ -3,80 +3,118 @@
 
 <template>
   <div class="tab content">
-    <router-link class="tablinks" id="Details" @click="highlight($event)" :to="{name: 'Details', path: '/Server/' +  id + '/Details'}">Details</router-link>
-    <router-link class="tablinks" id="Ressources" @click="highlight($event)" :to="{name: 'Ressources', path: '/Server/' +  id + '/Ressources'}">Ressources</router-link>
-    <router-link class="tablinks" id="Logs" @click="highlight($event)" :to="{name: 'Logs', path: '/Server/' +  id + '/Logs'}">Logs</router-link>
-    <router-link class="tablinks" id="Advanced" @click="highlight($event)" :to="{name: 'Advanced', path: '/Server/' +  id + '/Advanced'}">Advanced</router-link>
-    <router-link class="tablinks" id="Export" @click="highlight($event)" :to="{name: 'Export', path: '/Server/' +  id + '/Export'}">Export</router-link>
+    <router-link
+      class="tablinks"
+      id="Details"
+      @click="highlight($event)"
+      :to="{ name: 'Details', path: '/Server/' + id + '/Details' }"
+      >Details</router-link
+    >
+    <router-link
+      class="tablinks"
+      id="Ressources"
+      @click="highlight($event)"
+      :to="{ name: 'Ressources', path: '/Server/' + id + '/Ressources' }"
+      >Ressources</router-link
+    >
+    <router-link
+      class="tablinks"
+      id="Logs"
+      @click="highlight($event)"
+      :to="{ name: 'Logs', path: '/Server/' + id + '/Logs' }"
+      >Logs</router-link
+    >
+    <router-link
+      class="tablinks"
+      id="Advanced"
+      @click="highlight($event)"
+      :to="{ name: 'Advanced', path: '/Server/' + id + '/Advanced' }"
+      >Advanced</router-link
+    >
+    <router-link
+      class="tablinks"
+      id="Export"
+      @click="highlight($event)"
+      :to="{ name: 'Export', path: '/Server/' + id + '/Export' }"
+      >Export</router-link
+    >
     <router-view></router-view>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  data () {
+  data() {
     return {
       loading: false,
       id: "",
-      error: null
-    }
+      error: null,
+    };
   },
-  created () {
-    this.id = this.$route.params.id as string
-    this.$router.push({ name: 'Details', path: '/Server/' +  this.id + '/Details' })
-
+  created() {
+    this.id = this.$route.params.id as string;
+    this.$router.push({
+      name: "Details",
+      path: "/Server/" + this.id + "/Details",
+    });
   },
   watch: {
-    '$route.params.id': 'init',
-    '$route'(to, from) {
-        if(to.fullPath.split("/").length == 3) {
-          this.init();
-        }
+    "$route.params.id": "init",
+    $route(to, from) {
+      if (to.fullPath.split("/").length == 3) {
+        this.init();
       }
+    },
   },
   methods: {
     highlight(event: any) {
-        this.resetHighlite();
-        event.target.style.backgroundColor = "#474a4f"
-        event.target.style.borderLeft = "solid #618930"
-        event.target.style.borderRight = "solid #618930"
-        let currentElement : HTMLElement | null = event.target.previousElementSibling;
-        while (true) {
-          if (currentElement == null) {
-            break;
-          }
-          currentElement.style.borderRight = "hidden"
-          currentElement.style.borderLeft = "solid #618930"
-          currentElement = currentElement.previousElementSibling as HTMLElement
+      this.resetHighlite();
+      event.target.style.backgroundColor = "#474a4f";
+      event.target.style.borderLeft = "solid #618930";
+      event.target.style.borderRight = "solid #618930";
+      let currentElement: HTMLElement | null =
+        event.target.previousElementSibling;
+      while (true) {
+        if (currentElement == null) {
+          break;
         }
+        currentElement.style.borderRight = "hidden";
+        currentElement.style.borderLeft = "solid #618930";
+        currentElement = currentElement.previousElementSibling as HTMLElement;
+      }
     },
 
-    resetHighlite(){
+    resetHighlite() {
       let elements = document.getElementsByClassName("tablinks");
-      let first = true
-      Array.prototype.forEach.call(elements, function(el) {
-        el.style.backgroundColor = "#222629"
-        if(!first){
-          el.style.borderLeft = "hidden"
+      let first = true;
+      Array.prototype.forEach.call(elements, function (el) {
+        el.style.backgroundColor = "#222629";
+        if (!first) {
+          el.style.borderLeft = "hidden";
         }
-        el.style.borderRight = "solid #618930"
-        first = false
+        el.style.borderRight = "solid #618930";
+        first = false;
       });
     },
 
-    init(){
-      this.resetHighlite()
-      let elements = document.getElementsByClassName("tablinks") as HTMLCollectionOf<HTMLElement>;
-      elements[0].style.backgroundColor = "#474a4f"
-      elements[0].style.borderLeft = "solid #618930"
-      if(this.$route.params.id !== undefined){
-        this.$router.push({ name: 'Details', path: '/Server/' +  this.id + '/Details' })
+    init() {
+      this.resetHighlite();
+      let elements = document.getElementsByClassName(
+        "tablinks"
+      ) as HTMLCollectionOf<HTMLElement>;
+      elements[0].style.backgroundColor = "#474a4f";
+      elements[0].style.borderLeft = "solid #618930";
+      if (this.$route.params.id !== undefined) {
+        this.$router.push({
+          name: "Details",
+          path: "/Server/" + this.id + "/Details",
+        });
       }
-    }
+    },
   },
-})
+});
 </script>
 
 <style scoped>
@@ -107,16 +145,14 @@ export default defineComponent({
   border-left: solid #618930;
 }
 
-.tab a{
+.tab a {
   text-decoration: none; /* no underline */
   color: #6a6e71;
   font-weight: bold;
   font-size: 20px;
-
 }
 
-
-.TabContent{
+.TabContent {
   --borderPixel: 12px;
   margin: 0px var(--borderPixel) 6px;
   height: 88%;
@@ -126,5 +162,4 @@ export default defineComponent({
   border-radius: 15px;
   border-top-left-radius: 0px;
 }
-
 </style>

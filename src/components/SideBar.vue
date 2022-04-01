@@ -1,54 +1,65 @@
 <template>
-    <ul id="mySidenav" class="sidenav">
-        <li><router-link to="/">Home</router-link></li>
-        <li v-for="info in serverInfo" :key="info.id"><router-link :to="{name: 'Server', path: '/Server/' + info.id, params: { id: info.id}}">{{ info.name[0] }}</router-link></li>
-        <li><router-link to="/AddServer">Add Server</router-link></li>
-    </ul>
+  <ul id="mySidenav" class="sidenav">
+    <li v-for="info in serverInfo" :key="info.id">
+      <router-link
+        :to="{
+          name: 'Server',
+          path: '/Server/' + info.id,
+          params: { id: info.id },
+        }"
+        >{{ info.name[0] }}</router-link
+      >
+    </li>
+    <li><router-link to="/AddServer">Add Server</router-link></li>
+  </ul>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 import Server from "../api/server";
 
 export default defineComponent({
-  data () {
+  data() {
     return {
       loading: false,
       serverInfo: [] as IServer[],
-      error: null
-    }
+      error: null,
+    };
   },
-  created () {
-    this.fetchData()
+  created() {
+    this.fetchData();
   },
-  watch: {
-  },
+  watch: {},
   methods: {
-    fetchData () {
-      this.error  = null
-      this.loading = true
-      console.log("fetching Names")
-      Server.all().then((value) => {
-        this.serverInfo = value;
-        console.log(value)
-      });
-      this.loading = false
-    }
-  }
-})
+    fetchData() {
+      this.error = null;
+      this.loading = true;
+      console.log("fetching Names");
+      Server.all()
+        .then((value) => {
+          this.serverInfo = value;
+          console.log(value);
+          this.loading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+});
 </script>
 
 <style scoped>
 .sidenav {
-  height: 100%; 
+  height: 100%;
   max-width: 25%;
   position: fixed;
-  z-index: 1; 
-  top: 0; 
+  z-index: 1;
+  top: 0;
   left: 0;
   overflow-x: hidden;
-  margin-top: 32px; 
-  transition: 0.5s; 
+  margin-top: 32px;
+  transition: 0.5s;
 }
 
 .sidenav a {
@@ -59,14 +70,13 @@ export default defineComponent({
   transition: 0.3s;
   color: #6a6e71;
   font-weight: bold;
-  border: #87C232;
+  border: #87c232;
   border-style: outset;
   border-radius: 10px;
 }
 
 .sidenav a:hover {
   border-style: inset;
-  
 }
 
 .sidenav {
@@ -80,7 +90,7 @@ export default defineComponent({
 
 ul {
   list-style-type: none;
-  margin: 0; 
+  margin: 0;
   padding: 0;
   text-align: left;
   border-right: solid;

@@ -6,6 +6,7 @@
         "jsx": "preserve",
         "moduleResolution": "node",
         "allowJs": true,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "useUnknownInCatchVariables": false
     }
 }

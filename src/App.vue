@@ -1,16 +1,21 @@
 <template>
-  <img class="profile" src="./assets/profile.png" />
-  <SideBar></SideBar>
+  <img class="profile" src="./assets/profile.png" v-if="!isLogin" />
+  <SideBar v-if="!isLogin"></SideBar>
   <router-view></router-view>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import SideBar from "./components/SideBar.vue"
+import { defineComponent } from "vue";
+import SideBar from "./components/SideBar.vue";
 
 export default defineComponent({
-    components: { SideBar }
-})
+  components: { SideBar },
+  computed: {
+    isLogin() {
+      return this.$route.name === "Login";
+    },
+  },
+});
 </script>
 
 <style>
@@ -22,34 +27,38 @@ export default defineComponent({
   margin-top: 60px;
 }
 
-body{
+body {
   background-color: #222629;
   color: rgb(225, 225, 225);
 }
 
-h1, h2, h3,
-h4, h5, h6 {
-  color: #6A6E71;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #6a6e71;
 }
-.sidenav{
-  width: 15%; 
+.sidenav {
+  width: 15%;
 }
 
-.content{
+.content {
   width: 85%;
   position: fixed;
   left: 15%;
   top: 5%;
 }
 
-.TabContent{
+.TabContent {
   width: 85%;
   position: fixed;
   left: 15%;
   top: 10%;
-} 
+}
 
-.profile{
+.profile {
   z-index: 1;
   position: absolute;
   right: 0;
@@ -59,5 +68,4 @@ h4, h5, h6 {
   margin-right: 20px;
   border-radius: 8px;
 }
-
 </style>

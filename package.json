@@ -12,7 +12,8 @@
     "typescript": "^4.4.4",
     "vue": "^3.2.16",
     "vue-gauge": "^1.0.3",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@aspnet/signalr": "^1.0.27",
