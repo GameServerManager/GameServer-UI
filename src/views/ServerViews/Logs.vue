@@ -32,13 +32,16 @@
 <script lang="ts">
 import Server from "../../api/server";
 import { defineComponent } from "vue";
-import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
+import { HttpClient, HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 
 export default defineComponent({
   data() {
+    const token = this.$store.getters.jwtToken;
     return {
       connection: new HubConnectionBuilder()
-        .withUrl("https://localhost:7123/consoleHub")
+        .withUrl("https://localhost:7123/consoleHub", {
+          accessTokenFactory: () => token,
+        })
         .configureLogging(LogLevel.Trace)
         .build(),
       loading: true,
@@ -53,32 +56,30 @@ export default defineComponent({
     // already being observed
     var connected = this.connection.start();
     let fetchedId = this.$route.params.id as string;
-    Server.getLogs(fetchedId).then((value) => {
-      this.Log += value;
-      connected
-        .then(() => {
-          this.loading = false;
-          this.connection.send("Attach", fetchedId, true);
-        })
-        .catch((err) => (this.error = err));
-      this.connection.on("ConsoleMessage", (id, message) => {
-        if (fetchedId === id) {
-          Object.keys(message).forEach((scriptName) => {
-            if (!this.LogCache[scriptName]) {
-              this.LogCache[scriptName] = {};
+
+    this.connection.on("ConsoleMessage", (id, message) => {
+      if (fetchedId === id) {
+        Object.keys(message).forEach((scriptName) => {
+          if (!this.LogCache[scriptName]) {
+            this.LogCache[scriptName] = {};
+          }
+          Object.keys(message[scriptName]).forEach((id) => {
+            if (!this.LogCache[scriptName][id]) {
+              this.LogCache[scriptName][id] = "";
             }
-            Object.keys(message[scriptName]).forEach((id) => {
-              if (!this.LogCache[scriptName][id]) {
-                this.LogCache[scriptName][id] = "";
-              }
-              this.LogCache[scriptName][id] += message[scriptName][id];
-            });
+            this.LogCache[scriptName][id] += message[scriptName][id];
           });
-        }
-        this.updateSelection();
-      });
+        });
+      }
+      this.updateSelection();
     });
-    document.getElementById("ConsoleInput")?.focus();
+
+    connected
+      .then(() => {
+        this.loading = false;
+        this.connection.send("Attach", fetchedId, true);
+      })
+      .catch((err) => (this.error = err));
   },
   watch: {
     // call again the method if the route changes

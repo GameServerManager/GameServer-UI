@@ -2,7 +2,7 @@ import genericApi from "./genericApi";
 
 export default {
 
-    login(userName: string, password: string) : Promise<void>{
+    login(userName: string, password: string) : Promise<string>{
         return genericApi.Authenticate({
             userName: userName,
             password: password

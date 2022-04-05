@@ -14,13 +14,16 @@ import AddServer from './views/AddServer.vue'
 
 const store = createStore({
     state: {
-        isLoggedIn: false
+        isLoggedIn: false,
+        token: ""
     },
     getters: {
         isLoggedIn: state => state.isLoggedIn,
+        jwtToken: state => state.token
     },
     mutations: {
-        LogIn (state) {
+        LogIn (state, token) {
+            state.token = token;
             state.isLoggedIn = true;
         }
     }

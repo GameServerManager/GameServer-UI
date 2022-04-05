@@ -47,9 +47,12 @@ import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 
 export default defineComponent({
   data() {
+    const token = this.$store.getters.jwtToken;
     return {
       connection: new HubConnectionBuilder()
-        .withUrl("https://localhost:7123/consoleHub")
+        .withUrl("https://localhost:7123/consoleHub", {
+          accessTokenFactory: () => token,
+        })
         .configureLogging(LogLevel.Trace)
         .build(),
       loading: true,
@@ -64,44 +67,42 @@ export default defineComponent({
     // already being observed
     var connected = this.connection.start();
     let fetchedId = this.$route.params.id as string;
-    Server.getLogs(fetchedId).then((value) => {
-      this.Log += value;
-      connected
-        .then(() => {
-          this.loading = false;
-          this.connection.send("Attach", fetchedId, false);
-        })
-        .catch((err) => (this.error = err));
-      this.connection.on("ConsoleMessage", (id, message) => {
-        if (fetchedId === id) {
-          Object.keys(message).forEach((scriptName) => {
-            if (!this.LogCache[scriptName]) {
-              this.LogCache[scriptName] = {};
+
+    this.connection.on("ConsoleMessage", (id, message) => {
+      if (fetchedId === id) {
+        Object.keys(message).forEach((scriptName) => {
+          if (!this.LogCache[scriptName]) {
+            this.LogCache[scriptName] = {};
+          }
+          Object.keys(message[scriptName]).forEach((id) => {
+            if (!this.LogCache[scriptName][id]) {
+              this.LogCache[scriptName][id] = "";
             }
-            Object.keys(message[scriptName]).forEach((id) => {
-              if (!this.LogCache[scriptName][id]) {
-                this.LogCache[scriptName][id] = "";
-              }
-              this.LogCache[scriptName][id] += message[scriptName][id];
-            });
+            this.LogCache[scriptName][id] += message[scriptName][id];
           });
-        }
-        this.updateSelection();
-      });
-      this.connection.on("StdOutClosed", (id, execId) => {
-        if (fetchedId === id) {
-          Object.keys(this.LogCache).forEach((scriptName) => {
-            if (this.LogCache[scriptName][execId]) {
-              delete this.LogCache[scriptName][execId];
-            }
-            if (Object.keys(this.LogCache[scriptName]).length == 0) {
-              delete this.LogCache[scriptName];
-            }
-          });
-        }
-        this.updateSelection();
-      });
+        });
+      }
+      this.updateSelection();
     });
+    this.connection.on("StdOutClosed", (id, execId) => {
+      if (fetchedId === id) {
+        Object.keys(this.LogCache).forEach((scriptName) => {
+          if (this.LogCache[scriptName][execId]) {
+            delete this.LogCache[scriptName][execId];
+          }
+          if (Object.keys(this.LogCache[scriptName]).length == 0) {
+            delete this.LogCache[scriptName];
+          }
+        });
+      }
+      this.updateSelection();
+    });
+    connected
+      .then(() => {
+        this.loading = false;
+        this.connection.send("Attach", fetchedId, false);
+      })
+      .catch((err) => (this.error = err));
     document.getElementById("ConsoleInput")?.focus();
   },
   watch: {

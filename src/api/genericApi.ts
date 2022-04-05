@@ -27,7 +27,7 @@ export default {
 		.catch(err => reject(err)))
         return promis;
 	},
-	post<RetType>(path: string, data: RetType): Promise<RetType> {
+	post<DataType, RetType>(path: string, data : DataType): Promise<RetType> {
 		var promis = new Promise<RetType>((resolve, reject) => Axios.post(ENDPOINT + path, data, {
 			headers: {
 				'Authorization': `${this.TOKEN()}` 
@@ -43,7 +43,7 @@ export default {
 		.catch(err => reject(err)))
         return promis;
     },
-	put<RetType>(path: string, data: RetType): Promise<RetType>{
+	put<DataType, RetType>(path: string, data: DataType): Promise<RetType>{
 		var promis = new Promise<RetType>((resolve, reject) => Axios.put(ENDPOINT + path, data, {
 			headers: {
 				'Authorization': `${this.TOKEN()}` 
@@ -75,12 +75,12 @@ export default {
 		.catch(err => reject(err)))
 		return promis;
 	},
-	Authenticate(loginInfo) : Promise<void>{
+	Authenticate(loginInfo) : Promise<string>{
 		return new Promise((resolve, reject) => Axios.post(ENDPOINT + "/User/login/", loginInfo).then((value) => {
 			if (value.data != "") {
 				this.SetTOKEN(value.data);
 
-				resolve()
+				resolve(value.data)
 			} else {
 				reject()
 			}

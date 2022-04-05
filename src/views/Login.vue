@@ -1,7 +1,6 @@
 <script lang="ts">
 import Login from "../api/login";
 import { defineComponent } from "vue";
-import { Store } from "vuex";
 
 export default defineComponent({
   data() {
@@ -18,9 +17,9 @@ export default defineComponent({
   },
   methods: {
     LoginRequest() {
-      Login.login(this.userName, this.passwort).then(() => {
+      Login.login(this.userName, this.passwort).then((token) => {
         console.log(this.$store.state.isLoggedIn);
-        this.$store.commit("LogIn");
+        this.$store.commit("LogIn", token);
         console.log(this.$store.state.isLoggedIn);
 
         this.$router.push("/");
@@ -35,8 +34,8 @@ export default defineComponent({
 
 <template>
   <div class="content">
-    <H2 v-if="!register">Login</H2>
-    <H2 v-if="register">Register</H2>
+    <h2 v-if="!register">Login</h2>
+    <h2 v-if="register">Register</h2>
     <form>
       <input type="text" placeholder="Benutzername" v-model="userName" /><br />
       <input type="password" placeholder="Passwort" v-model="passwort" /><br />

@@ -24,5 +24,13 @@ export default {
 
     delete(id : string) {
         return genericApi.delete("/Server/" + id)
-    }
+    },
+
+    start(id: string): Promise<void> {
+        return genericApi.post("/Server/" + id + "/Start", {})
+    },
+
+    stop(id: string): Promise<void> {
+        return genericApi.post("/Server/" + id + "/Stop", {});
+    },
 }
