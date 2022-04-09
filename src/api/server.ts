@@ -18,10 +18,6 @@ export default {
         return genericApi.put("/Server/" + id, data)
     },
 
-    create(data : IServer) {
-        return genericApi.post("/Server/", data)
-    },
-
     delete(id : string) {
         return genericApi.delete("/Server/" + id)
     },
@@ -33,4 +29,7 @@ export default {
     stop(id: string): Promise<void> {
         return genericApi.post("/Server/" + id + "/Stop", {});
     },
+    import(config: serverConfig): Promise<string>{
+        return genericApi.post("/Server/Import", config)
+    }
 }

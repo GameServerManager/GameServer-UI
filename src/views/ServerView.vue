@@ -119,6 +119,7 @@ export default defineComponent({
 
 <style scoped>
 .tab {
+  position: absolute;
   margin-left: 12px;
   overflow: hidden;
   background-color: #222629;

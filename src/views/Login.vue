@@ -68,6 +68,7 @@ h2 {
 }
 
 .content {
+  position: fixed;
   left: 50%;
   top: 50%;
   margin-left: -250px;

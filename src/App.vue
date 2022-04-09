@@ -1,6 +1,6 @@
 <template>
-  <img class="profile" src="./assets/profile.png" v-if="!isLogin" />
-  <SideBar v-if="!isLogin"></SideBar>
+  <img class="profile" src="./assets/profile.png" v-if="!show" />
+  <SideBar v-if="!show"></SideBar>
   <router-view></router-view>
 </template>
 
@@ -11,8 +11,8 @@ import SideBar from "./components/SideBar.vue";
 export default defineComponent({
   components: { SideBar },
   computed: {
-    isLogin() {
-      return this.$route.name === "Login";
+    show() {
+      return this.$route.name === "Login" || this.$route.name === "AddServer";
     },
   },
 });
@@ -29,6 +29,7 @@ export default defineComponent({
 
 body {
   background-color: #222629;
+  overflow-x: hidden;
   color: rgb(225, 225, 225);
 }
 
@@ -40,15 +41,13 @@ h5,
 h6 {
   color: #6a6e71;
 }
-.sidenav {
-  width: 15%;
-}
 
 .content {
   width: 85%;
-  position: fixed;
+  position: absolute;
   left: 15%;
   top: 5%;
+  overflow-y: auto;
 }
 
 .TabContent {

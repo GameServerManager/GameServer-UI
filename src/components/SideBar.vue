@@ -51,6 +51,7 @@ export default defineComponent({
 
 <style scoped>
 .sidenav {
+  width: 15%;
   height: 100%;
   max-width: 25%;
   position: fixed;
@@ -58,8 +59,8 @@ export default defineComponent({
   top: 0;
   left: 0;
   overflow-x: hidden;
-  margin-top: 32px;
   transition: 0.5s;
+  font-size: 36px;
 }
 
 .sidenav a {
@@ -77,15 +78,6 @@ export default defineComponent({
 
 .sidenav a:hover {
   border-style: inset;
-}
-
-.sidenav {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 0px;
-  margin-top: 0px;
 }
 
 ul {
