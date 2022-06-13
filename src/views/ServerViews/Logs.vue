@@ -165,10 +165,14 @@ a {
   text-align: start;
 }
 .console span {
+  width: calc(100% - (2 * 10px));
+  display: block;
+  overflow-x: auto;
+  height: inherit;
   position: absolute;
   white-space: pre-wrap;
   left: 20px;
-  bottom: 30px;
+  bottom: 20px;
 }
 .console .consoleInput {
   position: absolute;
@@ -193,5 +197,6 @@ a {
 .ScriptSelection {
   position: absolute;
   right: 20px;
+  z-index: 1;
 }
 </style>

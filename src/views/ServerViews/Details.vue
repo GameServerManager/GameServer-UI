@@ -91,6 +91,9 @@ export default defineComponent({
     clearInterval((window as any).interval);
     this.startUpdate();
   },
+  unmounted() {
+    clearInterval((window as any).interval);
+  },
 });
 </script>
 

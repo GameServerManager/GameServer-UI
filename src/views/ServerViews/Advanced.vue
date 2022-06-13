@@ -24,7 +24,7 @@
           v-on:change="updateLogs"
         ></select>
       </div>
-      <span>{{ Log }}</span>
+      <span id="activeConsole" v-on:scroll="consoleScroll">{{ Log }}</span>
       <div class="consoleInput">
         <label for="ConsoleInput">></label>
         <input
@@ -60,6 +60,7 @@ export default defineComponent({
       Log: "",
       input: "",
       LogCache: {},
+      scrollBottom: true,
     };
   },
   created() {
@@ -78,7 +79,9 @@ export default defineComponent({
             if (!this.LogCache[scriptName][id]) {
               this.LogCache[scriptName][id] = "";
             }
-            this.LogCache[scriptName][id] += message[scriptName][id];
+            this.LogCache[scriptName][id] += this.removeBrokenCharacter(
+              message[scriptName][id]
+            );
           });
         });
       }
@@ -174,13 +177,31 @@ export default defineComponent({
       let idselection = document.getElementById(
         "IdSelection"
       ) as HTMLSelectElement;
+      let activeConsole = document.getElementById(
+        "activeConsole"
+      ) as HTMLSpanElement;
+
       this.Log = "";
       if (nameselection?.value) {
         this.Log = this.LogCache[nameselection?.value][idselection?.value];
+        if (this.scrollBottom && activeConsole !== null) {
+          activeConsole?.scrollTo(0, activeConsole.scrollHeight);
+        }
       }
     },
     shorten(str, n) {
       return str.length > n ? str.substr(0, n - 1) + "&hellip;" : str;
+    },
+    consoleScroll(e: UIEvent) {
+      var span = e.target as HTMLSpanElement;
+      if (span.scrollHeight - span.scrollTop - span.clientHeight < 20) {
+        this.scrollBottom = true;
+      } else {
+        this.scrollBottom = false;
+      }
+    },
+    removeBrokenCharacter(msg: string): string {
+      return msg.replace(/\0/g, "");
     },
   },
 });
@@ -194,12 +215,16 @@ a {
 .console {
   background-color: black;
   color: lightgray;
-  height: inherit;
+  height: 85%;
   margin: 10px;
   font-size: 20px;
   text-align: start;
 }
 .console span {
+  display: block;
+  width: calc(100% - (2 * 10px));
+  overflow-x: auto;
+  height: inherit;
   position: absolute;
   white-space: pre-wrap;
   left: 20px;
@@ -227,6 +252,7 @@ a {
 
 .ScriptSelection {
   position: absolute;
+  z-index: 1;
   right: 20px;
 }
 </style>
